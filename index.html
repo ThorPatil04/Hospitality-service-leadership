@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospitality & Service Leadership</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;scroll-behavior:smooth}
+body{background:#0f172a;color:white}
+nav{position:fixed;top:0;width:100%;display:flex;justify-content:center;gap:20px;padding:12px;background:rgba(0,0,0,.6);backdrop-filter:blur(10px);z-index:1000}
+nav a{color:white;text-decoration:none}
+
+header{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.85)),url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4');background-size:cover;text-align:center}
+header h1{font-size:2.8rem}
+header p{margin-top:10px;color:#cbd5f5}
+
+section{padding:80px 20px;text-align:center}
+h2{margin-bottom:15px}
+
+.card{background:#1e293b;padding:20px;margin:10px;border-radius:12px;display:inline-block;width:260px;transition:.3s}
+.card:hover{transform:scale(1.08)}
+
+button{padding:10px 20px;border:none;border-radius:10px;background:#38bdf8;color:white;margin:5px;cursor:pointer}
+input,select,textarea{padding:10px;margin:5px;border:none;border-radius:8px;width:250px}
+
+footer{background:#020617;padding:20px;text-align:center}
+
+.reveal{opacity:0;transform:translateY(40px);transition:1s}
+.reveal.active{opacity:1;transform:translateY(0)}
+
+.table div{background:#1e293b;margin:5px;padding:10px;border-radius:8px}
+
+.contact-box{background:#1e293b;padding:20px;border-radius:12px;display:inline-block}
+</style>
+</head>
+
+<body>
+
+<nav>
+<a href="#">Home</a>
+<a href="#about">About</a>
+<a href="#services">Services</a>
+<a href="#booking">Booking</a>
+<a href="#contactPage">Contact</a>
+<a href="#admin">Admin</a>
+</nav>
+
+<header>
+<h1>Hospitality & Service Leadership</h1>
+<p>Professional Hospitality Management System</p>
+<button onclick="goToBooking()">Book Now</button>
+</header>
+
+<section id="about" class="reveal">
+<h2>About Hospitality</h2>
+<p>
+Hospitality management is a professional field focused on delivering high-quality services in industries such as hotels, tourism, travel, and event management. It involves managing operations, ensuring customer satisfaction, and maintaining service excellence.
+</p>
+<p>
+The goal of hospitality is to create memorable experiences for guests through comfort, care, and personalized service.
+</p>
+</section>
+
+<section id="services" class="reveal">
+<h2>Our Services</h2>
+<div class="card">Hotel Operations Management<br><small>Managing guest services, reservations, and front office operations</small></div>
+<div class="card">Event & Conference Planning<br><small>Organizing corporate events, weddings, and functions</small></div>
+<div class="card">Customer Experience Management<br><small>Ensuring satisfaction and building long-term relationships</small></div>
+<br>
+<button onclick="openModal()">Learn More</button>
+<button onclick="goToBooking()">Book Service</button>
+<button onclick="showDetails()">View Details</button>
+</section>
+
+<section id="booking" class="reveal">
+<h2>Book a Service</h2>
+<input type="text" id="bname" placeholder="Your Name"><br>
+<input type="email" id="bemail" placeholder="Your Email"><br>
+<select id="service">
+<option value="">Select Service</option>
+<option>Hotel Operations</option>
+<option>Event Planning</option>
+<option>Customer Experience</option>
+</select><br>
+<input type="date" id="date"><br>
+<button onclick="bookService()">Confirm Booking</button>
+</section>
+
+<section id="contactPage" class="reveal">
+<h2>Contact Us</h2>
+<div class="contact-box">
+<p><b>Address:</b> Pune, Maharashtra, India</p>
+<p><b>Email:</b> hospitality@email.com</p>
+<p><b>Phone:</b> +91 9876543210</p>
+<br>
+<input type="text" id="cname" placeholder="Your Name"><br>
+<input type="email" id="cemail" placeholder="Your Email"><br>
+<textarea id="cmsg" placeholder="Your Message"></textarea><br>
+<button onclick="sendMessage()">Send Message</button>
+</div>
+</section>
+
+<section id="admin" class="reveal">
+<h2>Admin Panel</h2>
+<button onclick="loadBookings()">Show Bookings</button>
+<div id="bookingList"></div>
+</section>
+
+<div id="modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);justify-content:center;align-items:center;">
+<div style="background:#1e293b;padding:20px;border-radius:10px;">
+<h3>Hospitality Management Details</h3>
+<p>
+Hospitality management includes front office operations, housekeeping, food & beverage services, and customer relationship management. It focuses on delivering consistent service quality and ensuring customer satisfaction.
+</p>
+<button onclick="closeModal()">Close</button>
+</div>
+</div>
+
+<footer>
+<p>© 2026 | Designed by Prasad Mahajan</p>
+</footer>
+
+<script>
+function goToBooking(){document.getElementById('booking').scrollIntoView({behavior:'smooth'});} 
+function showDetails(){alert('Our services focus on professional hospitality, customer satisfaction, and efficient management.');}
+function openModal(){document.getElementById('modal').style.display='flex';}
+function closeModal(){document.getElementById('modal').style.display='none';}
+
+function bookService(){
+let name=bname.value,email=bemail.value,serviceVal=service.value,dateVal=date.value;
+if(name===''||email===''||serviceVal===''||dateVal===''){alert('Fill all fields');return;}
+let booking={name,email,service:serviceVal,date:dateVal};
+let bookings=JSON.parse(localStorage.getItem('bookings'))||[];
+bookings.push(booking);
+localStorage.setItem('bookings',JSON.stringify(bookings));
+alert('Booking Confirmed');
+bname.value='';bemail.value='';service.value='';date.value='';
+}
+
+function loadBookings(){
+let list=document.getElementById('bookingList');
+list.innerHTML='';
+let bookings=JSON.parse(localStorage.getItem('bookings'))||[];
+bookings.forEach((b,i)=>{
+let div=document.createElement('div');
+div.innerHTML=`${b.name} | ${b.service} | ${b.date} <button onclick="deleteBooking(${i})">Delete</button>`;
+list.appendChild(div);
+});
+}
+
+function deleteBooking(i){
+let bookings=JSON.parse(localStorage.getItem('bookings'))||[];
+bookings.splice(i,1);
+localStorage.setItem('bookings',JSON.stringify(bookings));
+loadBookings();
+}
+
+function sendMessage(){
+let name=cname.value,email=cemail.value,msg=cmsg.value;
+if(name===''||email===''||msg===''){alert('Please fill all contact details');return;}
+alert('Message Sent Successfully');
+cname.value='';cemail.value='';cmsg.value='';
+}
+
+window.addEventListener('scroll',()=>{
+document.querySelectorAll('.reveal').forEach(el=>{
+if(el.getBoundingClientRect().top<window.innerHeight-100){el.classList.add('active');}
+});
+});
+</script>
+
+</body>
+</html>
